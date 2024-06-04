@@ -18,24 +18,18 @@ class AuthController extends Authenticatable
         $this->model = new User();
     }
 
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
 
     /**
+     *  /api/user/login
      * Store a newly created resource in storage.
      */
     public function loginAccount(LoginRequest $request)
     {
         try {
 
-
             $credentials = $request->only(['email', 'password']);
     
+            
             if (!Auth::attempt($credentials)) {
                 return response(['message' => "account doesn't exist"], 404);
             }
@@ -50,6 +44,8 @@ class AuthController extends Authenticatable
     }
 
 
+    // /api/user/signup
+    // Create Account function
     public function createAccount(UserStoreRequest $request)
     {
         try {
@@ -61,11 +57,24 @@ class AuthController extends Authenticatable
 
     }
 
+
+    public function logoutAccount(Request $request) {
+        try {
+            $deleteCurrentToken = $request->user()->currentAccessToken()->delete;
+
+            return response(['message' => 'Successfully deleted'], 200);
+        } catch (\Throwable $th) {
+            return response(['message' => $th->getMessage()], 400);
+        }
+    }
+
     /**
-     * Display the specified resource.
+     * /api/user/me
      */
     public function show(Request $request)
     {
         return response()->json($request->user(), 200);
     }
+
+
 }
