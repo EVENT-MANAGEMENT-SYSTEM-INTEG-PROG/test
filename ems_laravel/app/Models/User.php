@@ -52,7 +52,10 @@ class User extends Authenticatable
         return $this->hasOne('App\Models\Role','role_id');
     }
 
-    
-    
 
+    public function notification() 
+    {
+        return $this->hasMany('App\Models\Notification', 'notification_id');
+    }
+    
 }

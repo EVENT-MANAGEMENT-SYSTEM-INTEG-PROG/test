@@ -31,7 +31,12 @@ class Schedule extends Model
     //relationship
     public function event()
     {
-        return $this->hasOne('App\Models\Event', 'event_id');
+        return $this->belongsTo('App\Models\Event', 'event_id');
+    }
+
+    public function notification()
+    {
+        return $this->hasOne('App\Models\Notification', 'notification_id');
     }
 
 }
