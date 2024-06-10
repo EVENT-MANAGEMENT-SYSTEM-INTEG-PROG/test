@@ -18,15 +18,24 @@ class Evaluation extends Model
         'event_id',
         'evaluation_rating',
         'remarks',
-        'evaluation_date_time'
+        'evaluation_status'
     ];
 
 
     public function casts(): array
-    {
+    {   
         return [
-            'evaluation_date_time' => 'datetime',
         ];
+    }
+
+    public function event()
+    {
+        return $this->hasOne('App\Models\Event', 'event_id');
+    }
+
+    public function user()
+    {
+        return $this->hasMany('App\Models\User', 'user_id');
     }
 
 }

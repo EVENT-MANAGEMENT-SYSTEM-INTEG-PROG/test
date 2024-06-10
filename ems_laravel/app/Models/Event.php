@@ -26,4 +26,9 @@ class Event extends Model
         return $this->hasMany('App\Models\Schedule', 'schedule_id');
     }
 
+    public function evaluation()
+    {
+        return $this->belongsTo('App\Models\Evaluation', 'evaluation_id');
+    }
+
 }

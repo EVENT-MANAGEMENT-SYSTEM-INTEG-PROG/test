@@ -57,5 +57,10 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\Notification', 'notification_id');
     }
+
+    public function evaluation() 
+    {
+        return $this->belongsTo('App\Models\Evaluation', 'evaluation_id');
+    }
     
 }
