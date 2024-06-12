@@ -16,9 +16,10 @@ class Event extends Model
     protected $fillable = [
         'event_name',
         'event_description',
+        'event_date',
         'event_time',
         'event_location',
-        'event_status',
+        'event_status', 
     ];
 
     public function schedule()
