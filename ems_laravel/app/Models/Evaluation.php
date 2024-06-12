@@ -30,7 +30,7 @@ class Evaluation extends Model
 
     public function event()
     {
-        return $this->hasOne('App\Models\Event', 'event_id');
+        return $this->belongsTo('App\Models\Event', 'event_id');
     }
 
     public function user()
