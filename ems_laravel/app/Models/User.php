@@ -63,4 +63,9 @@ class User extends Authenticatable
         return $this->belongsTo('App\Models\Evaluation', 'evaluation_id');
     }
     
+    public function registration() 
+    {
+        return $this->hasMany('App\Models\Registration', 'register_id');
+    }
+
 }
