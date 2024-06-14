@@ -25,7 +25,7 @@ class User extends Authenticatable
         'date_of_birth',
         'email',
         'user_name',
-        'user_password',
+        'password',
         'mobile_number',
         'street_address',
         'city',
@@ -34,14 +34,14 @@ class User extends Authenticatable
     ];
 
     protected $hidden = [
-        'user_password',
+        'password',
     ];
 
 
     protected function casts(): array
     {
         return [
-            'user_password' => 'hashed',
+            'password' => 'hashed',
             'role_id' => 'integer',
         ];
     }

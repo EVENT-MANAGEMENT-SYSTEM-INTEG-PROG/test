@@ -29,7 +29,7 @@ class UserStoreRequest extends FormRequest
             'date_of_birth'=> 'required|string',
             'email' => 'required|email|unique:users,email',
             'user_name'=> 'required|string',
-            'user_password' => 'required|string|min:6',
+            'password' => 'required|string|min:6',
             'mobile_number'=> 'required|string',
             'street_address'=> 'required|string',
             'city'=> 'required|string',

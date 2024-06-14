@@ -31,7 +31,7 @@ class RegistrationController extends Controller
 
             return response($registrationDetails, 200);
         } catch (\Throwable $th) {
-            return response(['message'=>$th.getMessage()], 400);
+            return response(['message'=>$th->getMessage()], 400);
         }
     }
 
@@ -49,7 +49,7 @@ class RegistrationController extends Controller
 
             return response($registrationDetails, 200);
         } catch (\Throwable $th) {
-            return response(['message'=>$th.getMessage()], 400);
+            return response(['message'=>$th->getMessage()], 400);
         }
     }
 
@@ -69,7 +69,7 @@ class RegistrationController extends Controller
                 );
             }
         } catch (\Throwable $th) {
-            return response(['message'=>$th.getMessage()], 400);
+            return response(['message'=>$th->getMessage()], 400);
         }
     }
 
@@ -87,7 +87,7 @@ class RegistrationController extends Controller
                 $registrationDetails->delete();
             }
         } catch (\Throwable $th) {
-            return response(['message' => $th.getMessage()], 400);
+            return response(['message' => $th->getMessage()], 400);
         }
     }
 }
