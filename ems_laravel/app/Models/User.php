@@ -18,30 +18,30 @@ class User extends Authenticatable
 
 
     protected $fillable = [
+        'role_id',
         'first_name',
         'last_name',
         'gender',
         'date_of_birth',
         'email',
         'user_name',
+        'user_password',
         'mobile_number',
         'street_address',
         'city',
         'post_code',
-        'password',
-        'country',
-        'role_id'
+        'country'
     ];
 
     protected $hidden = [
-        'password',
+        'user_password',
     ];
 
 
     protected function casts(): array
     {
         return [
-            'password' => 'hashed',
+            'user_password' => 'hashed',
             'role_id' => 'integer',
         ];
     }
