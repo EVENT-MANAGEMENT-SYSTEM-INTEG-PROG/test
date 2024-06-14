@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\eventNotificationController;
 use App\Http\Controllers\RegistrationController;
 use App\Models\Sanctum\PersonalAccessToken;
 use Laravel\Sanctum\Sanctum;
@@ -45,4 +46,8 @@ Route::prefix('/evaluation')->group(function() {
     Route::delete('/{id}', [EvaluationController::class, 'destroy']);
 });
 
-
+// NOTIFICATION
+Route::prefix('/notification')->group(function() {
+    Route::get('', [eventNotificationController::class, 'index']);
+    
+});
