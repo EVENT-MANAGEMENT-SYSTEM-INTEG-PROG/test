@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('register_status');
             $table->string('register_code');
             $table->date('register_date');
-            $table->date('register_date_time');
+            $table->time('register_time');
             $table->timestamps();
             $table->foreign('user_id')->references('user_id')->on('users')->onDelete('restrict')->onUpdate('restrict');
             $table->foreign('event_id')->references('event_id')->on('events')->onDelete('restrict')->onUpdate('cascade');

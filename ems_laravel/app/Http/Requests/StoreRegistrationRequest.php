@@ -25,9 +25,9 @@ class StoreRegistrationRequest extends FormRequest
             'user_id' => 'required|exists:users,user_id',
             'event_id' => 'required|exists:events,event_id',
             'register_status' => 'required|string',
-            'register_code' => 'required|int|max:5',
+            'register_code' => 'required|int|max:99999',
             'register_date' => 'required|date',
-            'register_date_time' => 'required|datetime',
+            'register_time' => ['required', 'regex:/^([01]?[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$/'],
         ];
     }
 }
