@@ -25,7 +25,9 @@ Route::prefix('/event')->group(function() {
     Route::post('', [EventController::class, 'store']);
     Route::patch('/{id}', [EventController::class, 'update']);
     Route::delete('/{id}', [EventController::class, 'destroy']);
-});
+    Route::post('/{id}/notify', [EventController::class, 'notifyParticipants']); // Notify participants
+    Route::post('/check-conflict', [EventController::class, 'checkConflict']); // Check for conflicts
+}); 
 
 //PARTICIPANT REGISTRATION
 Route::prefix('/registration')->group(function() {
