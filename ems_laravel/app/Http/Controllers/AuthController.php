@@ -60,9 +60,9 @@ class AuthController extends Authenticatable
 
     public function logoutAccount(Request $request) {
         try {
-            $deleteCurrentToken = $request->user()->currentAccessToken()->delete;
+            $request->user()->currentAccessToken()->delete();
 
-            return response(['message' => 'Successfully deleted'], 200);
+            return response(['message' => 'Successfully logout'], 200);
         } catch (\Throwable $th) {
             return response(['message' => $th->getMessage()], 400);
         }

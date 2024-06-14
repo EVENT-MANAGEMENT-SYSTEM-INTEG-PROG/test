@@ -20,16 +20,8 @@ class Registration extends Model
         'register_status',
         'register_code',
         'register_date',
-        'register_date_time'
+        'register_time'
     ];
-
-    public function casts(): array
-    {
-        return [
-            'register_date' => 'datetime',
-            'register_date_time' => 'datetime',
-        ];
-    }
 
     public function event()
     {

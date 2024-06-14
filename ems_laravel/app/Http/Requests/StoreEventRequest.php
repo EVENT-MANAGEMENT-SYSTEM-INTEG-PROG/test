@@ -25,7 +25,7 @@ class StoreEventRequest extends FormRequest
             'event_name' => 'required|string',
             'event_description' => 'required|string',
             'event_date' => 'required|date',
-            'event_time' => 'required|time',
+            'event_time' => ['required', 'regex:/^([01]?[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$/'],
             'event_location' => 'required|string',
             'event_status' => 'required|string',
         ];

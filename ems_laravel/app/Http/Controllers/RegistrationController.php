@@ -31,7 +31,7 @@ class RegistrationController extends Controller
 
             return response($registrationDetails, 200);
         } catch (\Throwable $th) {
-            return response(['message'=>$th.getMessage()], 400);
+            return response(['message'=>$th->getMessage()], 400);
         }
     }
 
@@ -49,27 +49,27 @@ class RegistrationController extends Controller
 
             return response($registrationDetails, 200);
         } catch (\Throwable $th) {
-            return response(['message'=>$th.getMessage()], 400);
+            return response(['message'=>$th->getMessage()], 400);
         }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(StoreRegistrationRequest $request, string $id)
     {
         try {
             $registrationDetails = Registration::find($id);
 
             if (!$registrationDetails) {
                 return response(['message' => "Registration not found"], 404);
-            } else {
-                $registrationDetails->update(
-                    $request->validated()
-                );
             }
+
+            $registrationDetails->update($request->validated());
+
+            return response($registrationDetails, 200);
         } catch (\Throwable $th) {
-            return response(['message'=>$th.getMessage()], 400);
+            return response(['message' => $th->getMessage()], 400);
         }
     }
 
@@ -85,9 +85,10 @@ class RegistrationController extends Controller
                 return response(['message' => "Registration not found"], 404);
             } else {
                 $registrationDetails->delete();
+                return response(['message' => 'Event has been deleted']);
             }
         } catch (\Throwable $th) {
-            return response(['message' => $th.getMessage()], 400);
+            return response(['message' => $th->getMessage()], 400);
         }
     }
 }
