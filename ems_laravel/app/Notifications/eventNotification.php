@@ -6,16 +6,17 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use App\Models\Event; // Import Event model
 
-class eventNotification extends Notification
+class EventNotification extends Notification
 {
     use Queueable;
 
-    protected $event_name;
+    protected $event;
 
-    public function __construct($event_name)
+    public function __construct(Event $event)
     {
-        $this->event_name = $event_name;
+        $this->event = $event;
     }
 
     public function via($notifiable)
@@ -26,19 +27,20 @@ class eventNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
+                    ->line('You are invited to ' . $this->event->event_name)
+                    ->action('View Event', url('/events'))
                     ->line('Thank you for using our application!');
     }
 
     public function toDatabase($notifiable)
     {
         return [
-            'user_id' => $notifiable->id,
-            'notification_message' => 'You are invited to ' . $this->event_name,
+            'notification_message' => 'You are invited to ' . $this->event->event_name,
             'notification_status' => 'unread',
             'notification_type' => 'event',
             'notification_date_time' => now(),
+            'organizer' => $this->event->organizer,
+            'participants' => $this->event->participants,
         ];
     }
 }

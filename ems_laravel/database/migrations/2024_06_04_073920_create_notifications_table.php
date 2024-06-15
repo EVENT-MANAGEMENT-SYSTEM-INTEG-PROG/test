@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('notifications', function (Blueprint $table) {
             $table->id('notification_id');
-            $table->unsignedBigInteger('user_id');
             $table->string('notification_message');
             $table->string('notification_status');
             $table->string('notification_type');
