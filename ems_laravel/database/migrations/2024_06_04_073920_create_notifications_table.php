@@ -14,14 +14,16 @@ return new class extends Migration
         Schema::create('notifications', function (Blueprint $table) {
             $table->id('notification_id');
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('schedule_id');
             $table->string('notification_message');
             $table->string('notification_status');
             $table->string('notification_type');
             $table->timestamp('notification_date_time');
             $table->timestamps();
-            $table->foreign('user_id')->references('user_id')->on('users')->onDelete('restrict')->onUpdate('cascade');
-            $table->foreign('schedule_id')->references('schedule_id')->on('schedules')->onDelete('restrict')->onUpdate('cascade');
+            $table->string('organizer');
+            $table->json('participants')->nullable();
+            
+            // Make schedule_id nullable
+            $table->unsignedBigInteger('schedule_id')->nullable(); // Add the schedule_id as a nullable field
         });
     }
 

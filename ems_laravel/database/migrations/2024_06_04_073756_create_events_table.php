@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('event_location');
             $table->string('event_status');
             $table->timestamps();
+            $table->string('organizer');
+            $table->json('participants');
         });
     }
 

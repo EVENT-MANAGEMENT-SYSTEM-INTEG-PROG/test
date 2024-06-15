@@ -28,6 +28,9 @@ class StoreEventRequest extends FormRequest
             'event_time' => ['required', 'regex:/^([01]?[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$/'],
             'event_location' => 'required|string',
             'event_status' => 'required|string',
+            'organizer' => 'required|string',
+            'participants' => 'required|array',
+            'participants.*' => 'email',
         ];
     }
 }
