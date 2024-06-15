@@ -52,6 +52,10 @@ class User extends Authenticatable
         return $this->hasOne('App\Models\Role','role_id');
     }
 
+    public function registration() 
+    {
+        return $this->hasMany('App\Models\Registration', 'register_id');
+    }
 
     public function notification() 
     {
@@ -63,9 +67,6 @@ class User extends Authenticatable
         return $this->belongsTo('App\Models\Evaluation', 'evaluation_id');
     }
     
-    public function registration() 
-    {
-        return $this->hasMany('App\Models\Registration', 'register_id');
-    }
+    
 
 }
