@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\RegistrationController;
+use App\Http\Controllers\SchedulingController;
 use App\Models\Sanctum\PersonalAccessToken;
 use Laravel\Sanctum\Sanctum;
 
@@ -25,7 +26,9 @@ Route::prefix('/event')->group(function() {
     Route::post('', [EventController::class, 'store']);
     Route::patch('/{id}', [EventController::class, 'update']);
     Route::delete('/{id}', [EventController::class, 'destroy']);
-});
+    Route::post('/{id}/notify', [EventController::class, 'notifyParticipants']); // Notify participants
+    Route::post('/check-conflict', [EventController::class, 'checkConflict']); // Check for conflicts
+}); 
 
 //PARTICIPANT REGISTRATION
 Route::prefix('/registration')->group(function() {
@@ -43,6 +46,15 @@ Route::prefix('/evaluation')->group(function() {
     Route::post('', [EvaluationController::class, 'store']);
     Route::patch('/{id}', [EvaluationController::class, 'update']);
     Route::delete('/{id}', [EvaluationController::class, 'destroy']);
+});
+
+// SCHEDULE
+Route::prefix('/schedule')->group(function() {
+    Route::get('', [SchedulingController::class, 'index']);
+    Route::get('/{id}', [SchedulingController::class, 'show']);
+    Route::post('', [SchedulingController::class, 'store']);
+    Route::patch('/{id}', [SchedulingController::class, 'update']);
+    Route::delete('/{id}', [SchedulingController::class, 'destroy']);
 });
 
 
