@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreEventRequest;
 use App\Models\Event;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\EventNotification;
 
 class EventController extends Controller
 {
@@ -17,10 +19,9 @@ class EventController extends Controller
     {
         try {
             $createdEvent = Event::create($request->all());
-
-            return response($createdEvent, 200);
+            return response($createdEvent, 201);
         } catch (\Throwable $th) {
-            return response(["message"=>$th->getMessage()], 400);
+            return response(["message" => $th->getMessage()], 400);
         }
     }
 
@@ -35,7 +36,7 @@ class EventController extends Controller
                 return response(['message' => 'Event not found'], 404);
             }
         } catch (\Throwable $th) {
-            return response(['message'=>$th->getMessage()], 400);
+            return response(['message' => $th->getMessage()], 400);
         }
     }
 
@@ -52,7 +53,7 @@ class EventController extends Controller
 
             return response(['message' => $eventDetails], 200);
         } catch (\Throwable $th) {
-            return response(['message'=>$th->getMessage()], 400);
+            return response(['message' => $th->getMessage()], 400);
         }
     }
 
@@ -69,7 +70,36 @@ class EventController extends Controller
 
             return response(['message' => 'Event has been deleted']);
         } catch (\Throwable $th) {
-            return response(['message'=>$th->getMessage()], 400);
+            return response(['message' => $th->getMessage()], 400);
         }
+    }
+
+    public function notifyParticipants(string $id)
+    {
+        try {
+            $event = Event::findOrFail($id);
+
+            foreach ($event->participants as $participant) {
+                Mail::to($participant->email)->send(new EventNotification($event));
+            }
+
+            return response(['message' => 'Notifications sent'], 200);
+        } catch (\Throwable $th) {
+            return response(['message' => $th->getMessage()], 400);
+        }
+    }
+
+    public function checkConflict(Request $request)
+    {
+        $request->validate([
+            'event_date' => 'required|date',
+            'event_time' => 'required|date_format:H:i',
+        ]);
+
+        $conflicts = Event::where('event_date', $request->event_date)
+                          ->where('event_time', $request->event_time)
+                          ->exists();
+
+        return response()->json(['conflict' => $conflicts], 200);
     }
 }
