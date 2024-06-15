@@ -10,7 +10,6 @@ class Event extends Model
     use HasFactory;
 
     protected $table = 'events';
-
     protected $primaryKey = 'event_id';
 
     protected $fillable = [
@@ -22,6 +21,7 @@ class Event extends Model
         'event_status', 
         'organizer',
         'participants'
+
     ];
     protected $casts = [
         'participants' => 'array', // Cast participants attribute to array
@@ -29,7 +29,7 @@ class Event extends Model
     
     public function schedule()
     {
-        return $this->hasMany('App\Models\Schedule', 'schedule_id');
+        return $this->hasMany('App\Models\Schedule', 'event_id');
     }
 
     public function evaluation()
@@ -37,4 +37,8 @@ class Event extends Model
         return $this->belongsTo('App\Models\Evaluation', 'evaluation_id');
     }
 
+    public function participants()
+    {
+        return $this->belongsToMany('App\Models\User', 'event_participants', 'event_id', 'user_id');
+    }
 }

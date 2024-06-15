@@ -9,13 +9,10 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
-
 {
     use HasApiTokens;
     protected $table = 'users';
-
     protected $primaryKey = 'user_id';
-
 
     protected $fillable = [
         'role_id',
@@ -37,7 +34,6 @@ class User extends Authenticatable
         'password',
     ];
 
-
     protected function casts(): array
     {
         return [
@@ -46,12 +42,10 @@ class User extends Authenticatable
         ];
     }
 
-
     public function role()
     {
-        return $this->hasOne('App\Models\Role','role_id');
+        return $this->hasOne('App\Models\Role', 'role_id');
     }
-
 
     public function notification() 
     {
@@ -62,10 +56,14 @@ class User extends Authenticatable
     {
         return $this->belongsTo('App\Models\Evaluation', 'evaluation_id');
     }
-    
+
     public function registration() 
     {
         return $this->hasMany('App\Models\Registration', 'register_id');
     }
 
+    public function events()
+    {
+        return $this->belongsToMany('App\Models\Event', 'event_participants', 'user_id', 'event_id');
+    }
 }
