@@ -20,8 +20,13 @@ class Event extends Model
         'event_time',
         'event_location',
         'event_status', 
+        'organizer',
+        'participants'
     ];
-
+    protected $casts = [
+        'participants' => 'array', // Cast participants attribute to array
+    ];
+    
     public function schedule()
     {
         return $this->hasMany('App\Models\Schedule', 'schedule_id');
