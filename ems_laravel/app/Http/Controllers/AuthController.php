@@ -8,6 +8,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Http\Requests\UserStoreRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Http\Requests\LoginRequest;
 
 
@@ -37,14 +38,42 @@ class AuthController extends Authenticatable
             $user = $request->user();
             $token = $request->user()->createToken('Personal Access Token')->plainTextToken;
             
-
-            
-            return response(['token' => $token,], 200);
+            return response(['token' => $token], 200);
         } catch (\Throwable $th) {
             return response(['message' => $th->getMessage()], 400);
         }
     }
 
+
+    /**
+     *  PATCH /api/user/me
+     * Store a newly created resource in storage.
+     */
+
+    public function accountUpdate(UpdateUserRequest $request, User $user)
+     {
+         try {
+            $userDetails = $user->find($request->user()->user_id);
+
+            
+            if (! $userDetails) {
+              return response(["message" => "User not found"]);
+            }
+
+            else {
+                 $userDetails->update(
+                    $request->all()
+                 );
+             return response(["message" => $userDetails], 200);
+            }
+             return response(["message" => $request->user()], 200);
+
+
+         } catch (\Throwable $th) {
+             return response(["message"=>$th->getMessage()], 400);
+         }
+     }
+    
 
     // /api/user/signup
     // Create Account function
@@ -56,7 +85,6 @@ class AuthController extends Authenticatable
         } catch (\Throwable $e) {
             return response(['message' => $e->getMessage()], 400);
         }
-
     }
 
 
