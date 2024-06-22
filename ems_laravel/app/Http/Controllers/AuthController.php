@@ -36,18 +36,10 @@ class AuthController extends Authenticatable
 
             $user = $request->user();
             $token = $request->user()->createToken('Personal Access Token')->plainTextToken;
+            
 
-    
-            return response([
-                'token' => $token,
-                'user' => [
-                    'id' => $user->user_id,
-                    'first_name' => $user->first_name,
-                    'last_name' => $user->last_name,
-                    'email' => $user->email,
-                    'role' => $user->role->role_name,
-                ]
-            ], 200);
+            
+            return response(['token' => $token,], 200);
         } catch (\Throwable $th) {
             return response(['message' => $th->getMessage()], 400);
         }
