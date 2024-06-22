@@ -62,13 +62,11 @@ class AuthController extends Authenticatable
 
             else {
                  $userDetails->update(
-                    $request->all()
+                    $request->validated()
                  );
-             return response(["message" => $userDetails], 200);
+             return response(["message" => "User Successfully Updated"], 200);
             }
-             return response(["message" => $request->user()], 200);
-
-
+            return response(["message" => $request->user()], 200);
          } catch (\Throwable $th) {
              return response(["message"=>$th->getMessage()], 400);
          }
