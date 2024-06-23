@@ -7,6 +7,7 @@ use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\SchedulingController;
+use App\Http\Controllers\BudgetController;
 use App\Models\Sanctum\PersonalAccessToken;
 use Laravel\Sanctum\Sanctum;
 
@@ -24,9 +25,9 @@ Route::prefix('/user')->group(function() {
 Route::prefix('/event')->group(function() {
     Route::get('', [EventController::class, 'index']);
     Route::get('/{id}', [EventController::class, 'show']);
-    Route::post('', [EventController::class, 'store']);
-    Route::patch('/{id}', [EventController::class, 'update']);
-    Route::delete('/{id}', [EventController::class, 'destroy']);
+    Route::post('', [EventController::class, 'store'])->middleware(['auth:sanctum']);
+    Route::patch('/{id}', [EventController::class, 'update'])->middleware(['auth:sanctum']);
+    Route::delete('/{id}', [EventController::class, 'destroy'])->middleware(['auth:sanctum']);
     Route::post('/{id}/notify', [EventController::class, 'notifyParticipants']); // Notify participants
     Route::post('/check-conflict', [EventController::class, 'checkConflict']); // Check for conflicts
 }); 
@@ -58,4 +59,11 @@ Route::prefix('/schedule')->group(function() {
     Route::delete('/{id}', [SchedulingController::class, 'destroy']);
 });
 
-
+// Budget
+Route::prefix('/budget')->group(function() {
+    Route::get('', [BudgetController::class, 'index'])->middleware(['auth:sanctum']);
+    Route::get('/{id}', [BudgetController::class, 'show'])->middleware(['auth:sanctum']);
+    Route::post('', [BudgetController::class, 'store'])->middleware(['auth:sanctum']);
+    Route::patch('/{id}', [BudgetController::class, 'update'])->middleware(['auth:sanctum']);
+    Route::delete('/{id}', [BudgetController::class, 'destroy'])->middleware(['auth:sanctum']);
+});
