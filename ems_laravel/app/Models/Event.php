@@ -21,6 +21,7 @@ class Event extends Model
         'event_status',
         'organizer',
         'participants',
+        'user_id',
         'event_image', // Add event_image to fillable attributes
     ];
 
@@ -36,6 +37,10 @@ class Event extends Model
     public function evaluation()
     {
         return $this->belongsTo('App\Models\Evaluation', 'evaluation_id');
+    }
+    
+    public function whatUser() {
+        return $this->belongsTo('App\Models\User', 'user_id');
     }
 
     public function participants()

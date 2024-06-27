@@ -19,6 +19,11 @@ Route::prefix('/user')->group(function() {
     Route::get('/me', [AuthController::class, 'show'])->middleware(['auth:sanctum']);
     Route::patch('/me', [AuthController::class, 'accountUpdate'])->middleware(['auth:sanctum']);
     Route::post('/logout', [AuthController::class, 'logoutAccount'])->middleware(['auth:sanctum']);
+    Route::get('/organizers', [AuthController::class, 'showOrganizer']);
+    
+
+    //Event
+    Route::get('/events', [EventController::class, 'myEvent'])->middleware(['auth:sanctum']);
 });
 
 //EVENT MANAGEMENT

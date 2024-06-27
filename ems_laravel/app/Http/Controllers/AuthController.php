@@ -19,6 +19,19 @@ class AuthController extends Authenticatable
         $this->model = new User();
     }
 
+    /**
+     *  /api/user/login
+     * Store a newly created resource in storage.
+     */
+
+    public function showOrganizer() {
+        try {
+            return User::where('role_id', 3)->get();
+        } catch (\Throwable $th) {
+            return response(["message" => $th->getMessage()]);
+        }
+        
+    }
 
     /**
      *  /api/user/login

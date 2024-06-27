@@ -16,6 +16,12 @@ class EventController extends Controller
         return response(Event::all(), 200);
     }
 
+    public function myEvent(Request $request) 
+    {
+        //return response(Event::where('user_id', $request->user()->user_id));
+        return response(Event::where('user_id', $request->user()->user_id)->get(), 200);
+    }
+
     public function store(StoreEventRequest $request)
     {
         try {
@@ -34,7 +40,7 @@ class EventController extends Controller
                 $validatedData['event_image'] = $imagePath; // Save image path to validated data
             }
 
-            $createdEvent = Event::create($validatedData);
+            $createdEvent = Event::create([...$validatedData, "user_id" => $request->user()->user_id]);
             return response($createdEvent, 201);
         } catch (\Throwable $th) {
             return response(["message" => $th->getMessage()], 400);
