@@ -31,6 +31,7 @@ class StoreEventRequest extends FormRequest
             'organizer' => 'required|string',
             'participants' => 'required|array',
             'participants.*' => 'email',
+            'event_image' => 'string',
         ];
     }
 }

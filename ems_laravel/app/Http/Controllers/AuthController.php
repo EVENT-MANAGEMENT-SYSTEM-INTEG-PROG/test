@@ -50,27 +50,24 @@ class AuthController extends Authenticatable
      * Store a newly created resource in storage.
      */
 
-    public function accountUpdate(UpdateUserRequest $request, User $user)
-     {
-         try {
+     public function accountUpdate(UpdateUserRequest $request, User $user)
+    {
+        try {
             $userDetails = $user->find($request->user()->user_id);
 
-            
             if (! $userDetails) {
-              return response(["message" => "User not found"]);
+                return response(["message" => "User not found"], 404);
             }
 
-            else {
-                 $userDetails->update(
-                    $request->validated()
-                 );
-             return response(["message" => "User Successfully Updated"], 200);
-            }
-            return response(["message" => $request->user()], 200);
-         } catch (\Throwable $th) {
-             return response(["message"=>$th->getMessage()], 400);
-         }
-     }
+            $userDetails->update($request->validated());
+
+            return response(["message" => "User Successfully Updated"], 200);
+        } catch (\Throwable $th) {
+            return response(["message" => $th->getMessage()], 400);
+        }
+    }
+
+     
     
 
     // /api/user/signup
