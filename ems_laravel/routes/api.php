@@ -72,3 +72,15 @@ Route::prefix('/budget')->group(function() {
     Route::patch('/{id}', [BudgetController::class, 'update'])->middleware(['auth:sanctum']);
     Route::delete('/{id}', [BudgetController::class, 'destroy'])->middleware(['auth:sanctum']);
 });
+
+// Attendee
+use App\Http\Controllers\AttendeeController;
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/event', [AttendeeController::class, 'getEventInfo']);
+    Route::get('/attendees', [AttendeeController::class, 'getAttendees']);
+    Route::post('/attendees', [AttendeeController::class, 'addAttendee']);
+    Route::put('/attendees/{id}', [AttendeeController::class, 'updateAttendee']);
+    Route::delete('/attendees/{id}', [AttendeeController::class, 'deleteAttendee']);
+});
+
