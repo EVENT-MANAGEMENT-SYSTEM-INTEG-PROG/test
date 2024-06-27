@@ -7,6 +7,7 @@ use App\Models\Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\EventNotification;
+use Illuminate\Support\Facades\Storage;
 
 class EventController extends Controller
 {
@@ -18,12 +19,29 @@ class EventController extends Controller
     public function store(StoreEventRequest $request)
     {
         try {
-            $createdEvent = Event::create($request->all());
+            $validatedData = $request->validated();
+
+            // Decode base64 image data and save to storage
+            if ($request->has('event_image')) {
+                $imageData = $request->input('event_image');
+                $imageData = str_replace('data:image/jpeg;base64,', '', $imageData);
+                $imageData = str_replace(' ', '+', $imageData);
+                $imageName = time() . '_' . uniqid() . '.jpg'; // Generate unique image name
+                $imagePath = 'events/' . $imageName; // Save to events directory
+
+                Storage::disk('public')->put($imagePath, base64_decode($imageData));
+
+                $validatedData['event_image'] = $imagePath; // Save image path to validated data
+            }
+
+            $createdEvent = Event::create($validatedData);
             return response($createdEvent, 201);
         } catch (\Throwable $th) {
             return response(["message" => $th->getMessage()], 400);
         }
     }
+
+
 
     public function show(Event $event, string $id)
     {
@@ -64,11 +82,16 @@ class EventController extends Controller
 
             if (!$eventDetails) {
                 return response(['message' => 'Event not found']);
-            } else {
-                $eventDetails->delete();
             }
 
-            return response(['message' => 'Event has been deleted']);
+            // Delete event image from storage if it exists
+            if ($eventDetails->event_image) {
+                Storage::disk('public')->delete($eventDetails->event_image);
+            }
+
+            $eventDetails->delete();
+
+            return response(['message' => 'Event and associated image have been deleted']);
         } catch (\Throwable $th) {
             return response(['message' => $th->getMessage()], 400);
         }

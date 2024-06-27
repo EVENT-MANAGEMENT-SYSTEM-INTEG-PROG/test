@@ -19,9 +19,10 @@ return new class extends Migration
             $table->time('event_time');
             $table->string('event_location');
             $table->string('event_status');
-            $table->timestamps();
             $table->string('organizer');
             $table->json('participants');   
+            $table->string('event_image')->nullable(); // Add event_image column
+            $table->timestamps();
         });
     }
 
