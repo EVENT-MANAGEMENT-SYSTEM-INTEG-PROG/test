@@ -35,6 +35,9 @@ Route::prefix('/event')->group(function() {
     Route::delete('/{id}', [EventController::class, 'destroy'])->middleware(['auth:sanctum']);
     Route::post('/{id}/notify', [EventController::class, 'notifyParticipants']); // Notify participants
     Route::post('/check-conflict', [EventController::class, 'checkConflict']); // Check for conflicts
+
+    Route::get('/assign/organizer', [EventController::class, 'assignEvent'])->middleware(['auth:sanctum']);
+
 }); 
 
 //PARTICIPANT REGISTRATION
