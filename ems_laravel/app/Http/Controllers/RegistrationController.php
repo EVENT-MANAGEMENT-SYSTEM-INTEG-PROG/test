@@ -22,18 +22,27 @@ class RegistrationController extends Controller
     public function store(StoreRegistrationRequest $request)
     {
         try {
-
-            if (Registration::all()->count() == 50) {
-                return response(['message' => 'only 50 people can register to this event'], 400);
+            if (Registration::count() >= 50) {
+                return response(['message' => 'Only 50 people can register for this event.'], 400);
             }
-
-            $registrationDetails = Registration::create($request->all());
-
+    
+            // Create the registration details
+            $registrationDetails = Registration::create($request->validated());
+    
+            // Check if registration status is confirmed
+            if ($registrationDetails->register_status === 'confirmed') {
+                $user = $registrationDetails->user; //shows details of user & refer that email to send notification
+                if ($user) {
+                    $user->notify(new EventInvitationNotification($registrationDetails));
+                }
+            }
+    
             return response($registrationDetails, 200);
         } catch (\Throwable $th) {
-            return response(['message'=>$th->getMessage()], 400);
+            return response(['message' => $th->getMessage()], 400);
         }
     }
+    
 
     /**
      * Display the specified resource.
@@ -62,10 +71,18 @@ class RegistrationController extends Controller
             $registrationDetails = Registration::find($id);
 
             if (!$registrationDetails) {
-                return response(['message' => "Registration not found"], 404);
+                return response(['message' => 'Registration not found'], 404);
             }
 
             $registrationDetails->update($request->validated());
+
+            if ($registrationDetails->register_status === 'confirmed') {
+                $user = $registrationDetails->user;
+                if ($user) {
+                    $user->notify(new EventInvitationNotification($registrationDetails));
+                }
+                return response(['message' => 'Registration confirmed and notification sent', 'details' => $registrationDetails], 200);
+            }
 
             return response($registrationDetails, 200);
         } catch (\Throwable $th) {

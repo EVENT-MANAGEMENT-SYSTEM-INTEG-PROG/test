@@ -47,7 +47,7 @@ Route::prefix('/registration')->group(function() {
     Route::post('', [RegistrationController::class, 'store']);
     Route::patch('/{id}', [RegistrationController::class, 'update']);
     Route::delete('/{id}', [RegistrationController::class, 'destroy']);
-    Route::get('/API/user-notify', [RegistrationController::class, 'userNotify']);
+    // Route::patch('/API/user-notify', [RegistrationController::class, 'userNotify']); #test only
 });
 
 // EVALUATION
