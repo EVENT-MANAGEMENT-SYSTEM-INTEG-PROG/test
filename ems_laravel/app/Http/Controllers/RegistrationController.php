@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreRegistrationRequest;
 use App\Models\Registration;
 use Illuminate\Http\Request;
-
+use App\Notifications\EventInvitationNotification;
 class RegistrationController extends Controller
 {
     /**
@@ -89,6 +89,37 @@ class RegistrationController extends Controller
             }
         } catch (\Throwable $th) {
             return response(['message' => $th->getMessage()], 400);
+        }
+    }
+    public function userNotify(Request $request){
+        try {
+            // Example: Retrieve registration (assuming you have a user_id in the Registration model)
+            $registration = Registration::find(1);  
+
+            if (!$registration) {
+                throw new \Exception('Registration not found');
+            }
+
+            // Assuming Registration has a relationship to User model and user() method exists
+            $user = $registration->user;
+
+            if (!$user) {
+                throw new \Exception('User not found for this registration');
+            }
+
+            // Customize your notification messages
+            $messages = [
+                'Hello' => "Hey, You're registered to this event",
+                'code' => 'this is your code 1212',
+                'Thank you' => 'Thank you for registering to this event',
+            ];
+
+            // Send notification to the user
+            $user->notify(new EventInvitationNotification($messages));
+
+            return response()->json(['message' => 'Notification sent'], 200);
+        } catch (\Throwable $th) {
+            return response()->json(['error' => $th->getMessage()], 400);
         }
     }
 }
