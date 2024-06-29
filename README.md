@@ -10,6 +10,7 @@ git clone https://github.com/EVENT-MANAGEMENT-SYSTEM-INTEG-PROG/test/
 
 # Go the the Directory
 cd test
+cd ems_laravel
 
 # Open the IDE
 code .
