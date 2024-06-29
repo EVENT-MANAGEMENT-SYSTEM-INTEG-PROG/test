@@ -2,7 +2,7 @@
 
 ## Instructions
 
-To get started with the mobile app, follow these steps: (use Command Prompt or CMD)
+To get started with the laravel backend, follow these steps: (use Command Prompt or CMD)
 
 ```sh
 # Clone the repository
