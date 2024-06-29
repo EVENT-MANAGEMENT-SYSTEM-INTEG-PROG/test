@@ -36,6 +36,9 @@ Route::prefix('/event')->group(function() {
     Route::delete('/{id}', [EventController::class, 'destroy'])->middleware(['auth:sanctum']);
     Route::post('/{id}/notify', [EventController::class, 'notifyParticipants']); // Notify participants
     Route::post('/check-conflict', [EventController::class, 'checkConflict']); // Check for conflicts
+
+    Route::get('/assign/organizer', [EventController::class, 'assignEvent'])->middleware(['auth:sanctum']);
+    Route::get('/assign/organizer/approved', [EventController::class, 'approvedEvent'])->middleware(['auth:sanctum']);
 }); 
 
 //PARTICIPANT REGISTRATION
@@ -45,6 +48,7 @@ Route::prefix('/registration')->group(function() {
     Route::post('', [RegistrationController::class, 'store']);
     Route::patch('/{id}', [RegistrationController::class, 'update']);
     Route::delete('/{id}', [RegistrationController::class, 'destroy']);
+    // Route::patch('/API/user-notify', [RegistrationController::class, 'userNotify']); #test only
 });
 
 // EVALUATION
