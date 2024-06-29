@@ -30,5 +30,5 @@ php artisan migrate
 # Seed the database
 php artisan migrate:fresh --seed
 
-# Run the database
+# Run the backend
 e.g. php artisan serve --host=192.168.1.102 --port=8000
