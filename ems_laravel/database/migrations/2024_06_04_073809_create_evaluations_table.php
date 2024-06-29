@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('evaluation_rating');
             $table->string('remarks')->nullable();
             $table->string('evaluation_status')->nullable();
-            $table->timestamp('created_date_time')->nullable();
+            $table->date('created_date_time');
             $table->timestamps();
             $table->foreign('user_id')->references('user_id')->on('users')->onDelete('restrict')->onUpdate('restrict');
             $table->foreign('event_id')->references('event_id')->on('events')->onDelete('restrict')->onUpdate('restrict');

@@ -28,12 +28,9 @@ class UserStoreRequest extends FormRequest
             'gender'=> 'required|string',
             'date_of_birth'=> 'required|string',
             'email' => 'required|email|unique:users,email',
-            'user_name'=> 'required|string',
+            'user_name'=> 'required|string|unique:users,user_name',
             'password' => 'required|string|min:6',
             'mobile_number'=> 'required|string',
-            'street_address'=> 'required|string',
-            'city'=> 'required|string',
-            'post_code'=> 'required|string',
             'country'=> 'required|string',
         ];
     }

@@ -18,15 +18,17 @@ class Event extends Model
         'event_date',
         'event_time',
         'event_location',
-        'event_status', 
+        'event_status',
         'organizer',
-        'participants'
-
+        'participants',
+        'user_id',
+        'event_image', // Add event_image to fillable attributes
     ];
+
     protected $casts = [
         'participants' => 'array', // Cast participants attribute to array
     ];
-    
+
     public function schedule()
     {
         return $this->hasMany('App\Models\Schedule', 'event_id');
@@ -35,6 +37,10 @@ class Event extends Model
     public function evaluation()
     {
         return $this->belongsTo('App\Models\Evaluation', 'evaluation_id');
+    }
+    
+    public function whatUser() {
+        return $this->belongsTo('App\Models\User', 'user_id');
     }
 
     public function participants()
