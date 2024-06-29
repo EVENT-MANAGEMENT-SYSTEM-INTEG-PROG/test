@@ -37,7 +37,7 @@ Route::prefix('/event')->group(function() {
     Route::post('/check-conflict', [EventController::class, 'checkConflict']); // Check for conflicts
 
     Route::get('/assign/organizer', [EventController::class, 'assignEvent'])->middleware(['auth:sanctum']);
-
+    Route::get('/assign/organizer/approved', [EventController::class, 'approvedEvent'])->middleware(['auth:sanctum']);
 }); 
 
 //PARTICIPANT REGISTRATION

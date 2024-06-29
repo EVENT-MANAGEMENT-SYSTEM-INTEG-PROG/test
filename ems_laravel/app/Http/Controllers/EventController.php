@@ -27,6 +27,11 @@ class EventController extends Controller
         return response(Event::where('organizer', $request->user()->user_id)->get(), 200);
     }
 
+    public function approvedEvent(Request $request)
+    {
+        return response(Event::where('event_status', 'approved')->get(), 200);
+    }
+
     public function store(StoreEventRequest $request)
     {
         try {
