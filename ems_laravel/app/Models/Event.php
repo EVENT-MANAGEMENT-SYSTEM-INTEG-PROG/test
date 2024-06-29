@@ -24,12 +24,11 @@ class Event extends Model
 
     public function schedule()
     {
-        return $this->hasMany('App\Models\Schedule', 'schedule_id');
+        return $this->hasMany('App\Models\Schedule', 'event_id');
     }
 
     public function evaluation()
     {
         return $this->belongsTo('App\Models\Evaluation', 'evaluation_id');
     }
-
 }

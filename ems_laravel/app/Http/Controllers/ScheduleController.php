@@ -7,12 +7,34 @@ use App\Models\Event;
 use App\Models\Schedule;
 use Illuminate\Http\Request;
 
-class SchedulingController extends Controller
+class ScheduleController extends Controller
 {
     public function index()
     {
-        return response(Schedule::all(), 200);
+        // Fetch schedules with related events
+        $schedules = Schedule::with('event')->get();
+        return response()->json($schedules);
     }
+
+    public function getSchedule(Request $request)
+    {
+        // Validate the request
+        $request->validate([
+            'date' => 'required|date',
+        ]);
+
+        // Get the date from the request
+        $date = $request->input('date');
+
+        // Query the schedule table for the specified date and eager load the event relationship
+        $schedules = Schedule::with(['event:event_id,event_name']) // Adjust 'event_name' to match your actual field name in the events table
+                        ->whereDate('schedule_date', $date)
+                        ->get();
+
+        // Return the schedule data as JSON
+        return response()->json($schedules);
+    }
+
 
     
     public function store(StoreScheduleRequest $request)
