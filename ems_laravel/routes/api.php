@@ -6,7 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\RegistrationController;
-use App\Http\Controllers\SchedulingController;
+use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\BudgetController;
 use App\Models\Sanctum\PersonalAccessToken;
 use Laravel\Sanctum\Sanctum;
@@ -62,11 +62,12 @@ Route::prefix('/evaluation')->group(function() {
 
 // SCHEDULE
 Route::prefix('/schedule')->group(function() {
-    Route::get('', [SchedulingController::class, 'index']);
-    Route::get('/{id}', [SchedulingController::class, 'show']);
-    Route::post('', [SchedulingController::class, 'store']);
-    Route::patch('/{id}', [SchedulingController::class, 'update']);
-    Route::delete('/{id}', [SchedulingController::class, 'destroy']);
+    Route::get('/search', [ScheduleController::class, 'getSchedule']);
+    Route::get('', [ScheduleController::class, 'index']);
+    Route::get('/{id}', [ScheduleController::class, 'show']);
+    Route::post('create', [ScheduleController::class, 'store']);
+    Route::patch('/{id}', [ScheduleController::class, 'update']);
+    Route::delete('/{id}', [ScheduleController::class, 'destroy']);
 });
 
 // Budget
