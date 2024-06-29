@@ -22,14 +22,15 @@ class EvaluationController extends Controller
     public function store(StoreEvaluationRequest $request)
     {
         try {
+            $validatedData = $request->validated();
+            $validatedData['created_date_time'] = now(); // Set the current date and time
 
-            $createdEvaluation = Evaluation::create($request->all());
+            $createdEvaluation = Evaluation::create($validatedData);
 
             return response($createdEvaluation, 200);
         } catch (\Throwable $th) {
-            return response(["message"=>$th->getMessage()], 400);
+            return response(["message" => $th->getMessage()], 400);
         }
-
     }
 
     /**

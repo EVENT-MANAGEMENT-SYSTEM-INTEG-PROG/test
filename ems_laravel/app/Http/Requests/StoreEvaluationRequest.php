@@ -26,7 +26,7 @@ class StoreEvaluationRequest extends FormRequest
             'event_id'=> 'required|exists:events,event_id',
             'evaluation_rating' => 'required|min:1|max:5',
             'remarks' => 'required|string|max:255',
-            'evaluation_status' => 'required|string'
+            'evaluation_status' => 'required|string',
         ];
     }
 }

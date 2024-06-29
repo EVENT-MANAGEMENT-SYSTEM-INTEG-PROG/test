@@ -18,7 +18,8 @@ class Evaluation extends Model
         'event_id',
         'evaluation_rating',
         'remarks',
-        'evaluation_status'
+        'evaluation_status',
+        'created_date_time'
     ];
 
 

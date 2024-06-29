@@ -20,6 +20,7 @@ Route::prefix('/user')->group(function() {
     Route::patch('/me', [AuthController::class, 'accountUpdate'])->middleware(['auth:sanctum']);
     Route::post('/logout', [AuthController::class, 'logoutAccount'])->middleware(['auth:sanctum']);
     Route::get('/organizers', [AuthController::class, 'showOrganizer']);
+    Route::get('/participants', [AuthController::class, 'showParticipant']);
     
 
     //Event
