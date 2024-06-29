@@ -1,18 +1,3 @@
-# test
-
-
-# How to Run this app # 
-
-**Instruction**
-
-```
-git clone 
-cd test
-php composer install
-php artisan migrate
-```
-
-
 # How to run the laravel backend
 
 ## Instructions
