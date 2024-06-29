@@ -6,6 +6,7 @@ use App\Http\Requests\StoreScheduleRequest;
 use App\Models\Event;
 use App\Models\Schedule;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ScheduleController extends Controller
 {
@@ -18,68 +19,85 @@ class ScheduleController extends Controller
 
     public function getSchedule(Request $request)
     {
-        // Validate the request
         $request->validate([
-            'date' => 'required|date',
+            'date' => 'required|date_format:Y-m-d',
         ]);
 
-        // Get the date from the request
         $date = $request->input('date');
 
-        // Query the schedule table for the specified date and eager load the event relationship
-        $schedules = Schedule::with(['event:event_id,event_name']) // Adjust 'event_name' to match your actual field name in the events table
-                        ->whereDate('schedule_date', $date)
-                        ->get();
+        // Eager load the event relationship and include event_time
+        $schedules = Schedule::with(['event:event_id,event_name,event_time'])
+                            ->whereDate('schedule_date', $date)
+                            ->get();
 
-        // Return the schedule data as JSON
         return response()->json($schedules);
     }
 
 
     
-    public function store(StoreScheduleRequest $request)
+    // public function store(StoreScheduleRequest $request)
+    // {
+    //     try {
+    //         $event_id = $request->input('event_id');
+    //         $schedule_date = $request->input('schedule_date');
+
+
+    //          // Check if the event exists
+    //          $checkEvent = Event::where('event_id', $event_id)
+    //                             ->doesntExist();
+    //         if ($checkEvent) {
+    //              return response(['message' => 'Event does not Exist'], 422);
+    //         }
+
+    //         // Check if the event with given event_id is already scheduled on the provided schedule_date
+    //         $existingSchedule = Schedule::where('event_id', $event_id)
+    //                                 ->where('schedule_date', $schedule_date)
+    //                                 ->exists();
+
+    //         if ($existingSchedule) {
+    //             return response(['message' => 'Cannot Schedule Event. The Particular Event is Already Scheduled for the given date.'], 422);
+    //         }
+
+    //         // Check if the schedule_date is already booked for any event
+    //         $dateAlreadyBooked = Schedule::where('schedule_date', $schedule_date)
+    //                                     ->exists();
+
+    //         if ($dateAlreadyBooked) {
+    //             return response(['message' => 'Cannot Schedule Event. The Particular Date is Already Booked for another event.'], 422);
+    //         }
+
+    //         // If checks pass, create the schedule
+    //         $createdSchedule = Schedule::create([
+    //             'event_id' => $event_id,
+    //             'schedule_date' => $schedule_date,
+    //             // Add other fields as needed from the request
+    //         ]);
+
+    //         return response($createdSchedule, 200);
+    //     } catch (\Throwable $th) {
+    //         return response(["message" => $th->getMessage()], 400);
+    //     }
+    // }
+
+    public function store(Request $request)
     {
-        try {
-            $event_id = $request->input('event_id');
-            $schedule_date = $request->input('schedule_date');
+        $validator = Validator::make($request->all(), [
+            'eventId' => 'required|integer|exists:events,event_id',
+            'scheduleDate' => 'required|date_format:Y-m-d', // Ensure the date is in YYYY-MM-DD format
+        ]);
 
-
-             // Check if the event exists
-             $checkEvent = Event::where('event_id', $event_id)
-                                ->doesntExist();
-            if ($checkEvent) {
-                 return response(['message' => 'Event does not Exist'], 422);
-            }
-
-            // Check if the event with given event_id is already scheduled on the provided schedule_date
-            $existingSchedule = Schedule::where('event_id', $event_id)
-                                    ->where('schedule_date', $schedule_date)
-                                    ->exists();
-
-            if ($existingSchedule) {
-                return response(['message' => 'Cannot Schedule Event. The Particular Event is Already Scheduled for the given date.'], 422);
-            }
-
-            // Check if the schedule_date is already booked for any event
-            $dateAlreadyBooked = Schedule::where('schedule_date', $schedule_date)
-                                        ->exists();
-
-            if ($dateAlreadyBooked) {
-                return response(['message' => 'Cannot Schedule Event. The Particular Date is Already Booked for another event.'], 422);
-            }
-
-            // If checks pass, create the schedule
-            $createdSchedule = Schedule::create([
-                'event_id' => $event_id,
-                'schedule_date' => $schedule_date,
-                // Add other fields as needed from the request
-            ]);
-
-            return response($createdSchedule, 200);
-        } catch (\Throwable $th) {
-            return response(["message" => $th->getMessage()], 400);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
         }
+
+        $schedule = new Schedule();
+        $schedule->event_id = $request->eventId;
+        $schedule->schedule_date = $request->scheduleDate;
+        $schedule->save();
+
+        return response()->json(['message' => 'Schedule created successfully', 'schedule' => $schedule], 201);
     }
+
 
 
     public function show(Schedule $schedule, string $id)
