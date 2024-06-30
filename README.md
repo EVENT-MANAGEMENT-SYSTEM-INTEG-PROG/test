@@ -30,5 +30,8 @@ php artisan migrate
 # Seed the database
 php artisan migrate:fresh --seed
 
+# Link the laravel storage
+php artisan storage:link
+
 # Run the backend
 e.g. php artisan serve --host=192.168.1.102 --port=8000
