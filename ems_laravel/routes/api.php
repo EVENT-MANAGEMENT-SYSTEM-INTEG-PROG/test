@@ -37,8 +37,15 @@ Route::prefix('/event')->group(function() {
     Route::post('/{id}/notify', [EventController::class, 'notifyParticipants']); // Notify participants
     Route::post('/check-conflict', [EventController::class, 'checkConflict']); // Check for conflicts
 
+    Route::get('/assign/organizer/numallevent', [EventController::class, 'numAllEvent'])->middleware(['auth:sanctum']);
+    Route::get('/assign/organizer/numpendingevent', [EventController::class, 'numPendingEvent'])->middleware(['auth:sanctum']);
+    Route::get('/assign/organizer/numapprovedevent', [EventController::class, 'numApprovedEvent'])->middleware(['auth:sanctum']);
+    Route::get('/assign/organizer/numcancelledevent', [EventController::class, 'numCancelledEvent'])->middleware(['auth:sanctum']);
+
     Route::get('/assign/organizer', [EventController::class, 'assignEvent'])->middleware(['auth:sanctum']);
     Route::get('/assign/organizer/approved', [EventController::class, 'approvedEvent'])->middleware(['auth:sanctum']);
+    Route::get('/assign/organizer/cancelled', [EventController::class, 'cancelledEvent'])->middleware(['auth:sanctum']);
+    Route::get('/assign/organizer/pending', [EventController::class, 'pendingEvent'])->middleware(['auth:sanctum']);
 }); 
 
 //PARTICIPANT REGISTRATION

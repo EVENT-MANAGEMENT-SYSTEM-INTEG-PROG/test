@@ -22,6 +22,27 @@ class EventController extends Controller
         return response(Event::where('user_id', $request->user()->user_id)->get(), 200);
     }
 
+    public function numAllEvent(Request $request) 
+    {
+        //return response(Event::where('user_id', $request->user()->user_id));
+        return response(Event::all()->count(), 200);
+    }
+
+    public function numPendingEvent(Request $request)
+    {
+        return response(Event::where('event_status', 'pending')->count(), 200);
+    }
+
+    public function numApprovedEvent(Request $request)
+    {
+        return response(Event::where('event_status', 'approved')->count(), 200);
+    }
+
+    public function numCancelledEvent(Request $request)
+    {
+        return response(Event::where('event_status', 'cancelled')->count(), 200);
+    }
+
     public function assignEvent(Request $request)
     {
         return response(Event::where('organizer', $request->user()->user_id)->get(), 200);
@@ -30,6 +51,16 @@ class EventController extends Controller
     public function approvedEvent(Request $request)
     {
         return response(Event::where('event_status', 'approved')->get(), 200);
+    }
+
+    public function cancelledEvent(Request $request)
+    {
+        return response(Event::where('event_status', 'cancelled')->get(), 200);
+    }
+
+    public function pendingEvent(Request $request)
+    {
+        return response(Event::where('event_status', 'pending')->get(), 200);
     }
 
     public function store(StoreEventRequest $request)
