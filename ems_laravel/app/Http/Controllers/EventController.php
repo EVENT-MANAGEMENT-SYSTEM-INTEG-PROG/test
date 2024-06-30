@@ -68,6 +68,11 @@ class EventController extends Controller
         try {
             $validatedData = $request->validated();
 
+            // Check if the event date already exists in the events table
+            if (Event::where('event_date', $validatedData['event_date'])->exists()) {
+                return response()->json(['message' => 'The selected date is already scheduled.'], 409);
+            }
+
             // Decode base64 image data and save to storage
             if ($request->has('event_image')) {
                 $imageData = $request->input('event_image');
@@ -84,7 +89,7 @@ class EventController extends Controller
             $createdEvent = Event::create([...$validatedData, "user_id" => $request->user()->user_id]);
             return response($createdEvent, 201);
         } catch (\Throwable $th) {
-            return response(["message" => $th->getMessage()], 400);
+            return response()->json(["message" => $th->getMessage()], 400);
         }
     }
 
@@ -160,16 +165,16 @@ class EventController extends Controller
     }
 
     public function checkConflict(Request $request)
-    {
-        $request->validate([
-            'event_date' => 'required|date',
-            'event_time' => 'required|date_format:H:i',
-        ]);
+{
+    $request->validate([
+        'event_date' => 'required|date',
+    ]);
 
-        $conflicts = Event::where('event_date', $request->event_date)
-                          ->where('event_time', $request->event_time)
-                          ->exists();
+    // Check for conflicts based only on the event_date
+    $conflicts = Event::where('event_date', $request->event_date)
+                      ->exists();
 
-        return response()->json(['conflict' => $conflicts], 200);
-    }
+    return response()->json(['conflict' => $conflicts], 200);
+}
+
 }
